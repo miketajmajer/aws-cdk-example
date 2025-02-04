@@ -21,3 +21,15 @@ npm i -g typescript
 npm i -g ts-node
 npm i -g aws-cdk
 ```
+
+## Doco
+
+[CDK Documentation](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html)
+
+##
+
+Commands:
+1. cdk bootstrap - add the CDK metadata to the CloudFormation Stacks (Each AWS account and region needs to be bootstrapped only once)
+1. cdk deploy - build (cdk.out) and deploy the new stack
+1. cdk synth - regenerate the cdk.out folder (not deploy)
+1. cdk diff - compare deployed stack with current state
