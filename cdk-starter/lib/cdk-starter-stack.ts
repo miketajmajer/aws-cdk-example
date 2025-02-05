@@ -8,6 +8,7 @@ class L3Bucket extends Construct {
     super(scope, id);
 
     new Bucket(this, id, {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
       lifecycleRules: [{
         expiration: cdk.Duration.days(expiration),
       }]
@@ -19,28 +20,40 @@ export class CdkStarterStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) { //NOSONAR
     super(scope, id, props);
 
+    // Parameters for this CloudFormation Stck
+    const durationParamater = new cdk.CfnParameter(this, 'duration', {
+      type: 'Number',
+      default: 6,
+      minValue: 1,
+      maxValue: 10,
+    });
+
     // Create an S3 Bucket via L1
-    new CfnBucket(this, 'MyL1Bucket', {
+    const cnfBucket = new CfnBucket(this, 'MyL1Bucket', {
       lifecycleConfiguration: {
         rules: [{
-          expirationInDays: 2,
+          expirationInDays: durationParamater.valueAsNumber,
           status: 'Enabled',
         }]
       }
     });
+    // CnfBucket must set policy after creation
+    cnfBucket.applyRemovalPolicy(cdk.RemovalPolicy.DESTROY);
 
     // Create an S3 Bucket via L2 (more generic)
-    const b1 = new Bucket(this, 'MyL2Bucket', {
+    const l2Bucket = new Bucket(this, 'MyL2Bucket', {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
       lifecycleRules: [{
-        expiration: cdk.Duration.days(2),
+        expiration: cdk.Duration.days(durationParamater.valueAsNumber),
       }]
     });
+
     // name must be unique!
     new cdk.CfnOutput(this, 'MyL2BucketName', { //NOSONAR
-      value: b1.bucketName,
+      value: l2Bucket.bucketName,
     })
 
     // Create an S3 Bucket via L3
-    new L3Bucket(this, 'MyL3Bucket', 2); //NOSONAR
+    new L3Bucket(this, 'MyL3Bucket', durationParamater.valueAsNumber); //NOSONAR
   }
 }

@@ -45,3 +45,17 @@ Removed this import for simple query service:
 // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs-readme.html
 import * as sqs from 'aws-cdk-lib/aws-sqs'; //NOSONAR
 ```
+
+## Patameters
+
+```
+    const durationParamater = new cdk.CfnParameter(this, 'duration', {
+      type: 'Number',
+      default: 6,
+      minValue: 1,
+      maxValue: 10,
+    });
+```
+```
+cdk deploy --parameters duration=5
+```
