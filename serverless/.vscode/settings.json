@@ -2,9 +2,5 @@
 {
     "sonarlint.analyzerProperties": {
         "sonar.javascript.node.maxspace": "8192"
-    },
-    "sonarlint.connectedMode.project": {
-        "connectionId": "mike-tajmajer-fullstacklabs",
-        "projectKey": "mike-tajmajer-fullstacklabs_aws-cdk-example"
     }
 }
