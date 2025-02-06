@@ -1,0 +1,6 @@
+// <project>/.vscode/settings.json
+{
+    "sonarlint.analyzerProperties": {
+        "sonar.javascript.node.maxspace": "8192"
+    }
+}
