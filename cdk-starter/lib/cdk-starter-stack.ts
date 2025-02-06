@@ -17,7 +17,7 @@ class L3Bucket extends Construct {
 }
 
 export class CdkStarterStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) { //NOSONAR
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     // Parameters for this CloudFormation Stck
@@ -49,11 +49,11 @@ export class CdkStarterStack extends cdk.Stack {
     });
 
     // name must be unique!
-    new cdk.CfnOutput(this, 'MyL2BucketName', { //NOSONAR
+    new cdk.CfnOutput(this, 'MyL2BucketName', {
       value: l2Bucket.bucketName,
     })
 
     // Create an S3 Bucket via L3
-    new L3Bucket(this, 'MyL3Bucket', durationParamater.valueAsNumber); //NOSONAR
+    new L3Bucket(this, 'MyL3Bucket', durationParamater.valueAsNumber);
   }
 }

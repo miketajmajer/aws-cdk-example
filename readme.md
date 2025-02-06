@@ -59,3 +59,75 @@ import * as sqs from 'aws-cdk-lib/aws-sqs'; //NOSONAR
 ```
 cdk deploy --parameters duration=5
 ```
+
+## Secrets
+
+https://medium.com/@davidkelley87/deploying-secrets-with-aws-cdk-f6728352c9d9
+
+```
+const parameterName = new CfnParameter(this, 'apiKey', {
+  type: 'String',
+  noEcho: true
+});
+
+const apiKeySecret = new secrets.Secret(this, 'API Key', {
+  secretName: 'apiKey',
+  secretStringValue: SecretValue.unsafePlainText(
+    secretApiKey.valueAsString
+  ),
+});
+
+npx cdk deploy --parameters apiKey=1234567890
+```
+
+Better way is to use the AWS Lambda Parameter Store Extension:
+
+```
+// CDK code
+const layerVersionArn = 'arn:aws:lambda:us-east-1:177933569100:layer:AWS-Parameters-and-Secrets-Lambda-Extension:4';
+
+// note: The AWS Parameters and Secrets Lambda Extension is a cache that stores
+// parameters and secrets for AWS Lambda functions. It's a Lambda layer that can be added to
+// new or existing Lambda functions.
+
+const lambdaFunction = new lambda.Function(this, 'MyLambdaFunction', {
+  code: lambda.Code.fromAsset('lambda'),
+  handler: 'index.handler',
+  runtime: lambda.Runtime.NODEJS_18_X,
+  layers: [
+    lambda.LayerVersion.fromLayerVersionArn(this, 'Layer', layerVersionArn)
+  ]
+});
+
+apiKeySecret.grantRead(lambdaFunction);
+
+lambdaFunction.addToRolePolicy(
+  new iam.PolicyStatement({
+    actions: ['ssm:GetParameter'],
+    resources: ['*']
+  })
+);
+```
+
+And in the Lambda:
+```
+import { URL } from 'node:url';
+
+secretPath = new URL('/systemsmanager/parameters/get', 'http://localhost:2772');
+
+secretPath.searchParams.set('name', '/aws/reference/secretsmanager/apiKey');
+
+const secretValue = await fetch(secretPath.toString(), {
+  headers: {
+    'X-Aws-Parameters-Secrets-Token': process.env.AWS_SESSION_TOKEN
+  }
+}).then((res) => res.text()))
+
+export const handler = async () => {
+    return { secretValue };
+};
+```
+
+This way the secret is pulled from the AWS Secrets Manager, and never
+visiable in the CDK and only accessable due to the explicet granting access to the lambda service.
+
