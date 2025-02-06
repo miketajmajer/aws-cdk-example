@@ -1,6 +1,6 @@
 exports.main = async (event, context) => {
   return {
     statusCode: 200,
-    body: JSON.stringify({ message: 'Hello World!' }),
+    body: JSON.stringify({ message: `Hello World! My table is '${process.env.TABLE_NAME}'` }),
   };
 };
