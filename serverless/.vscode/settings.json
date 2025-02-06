@@ -5,6 +5,6 @@
     },
     "sonarlint.connectedMode.project": {
         "connectionId": "mike-tajmajer-fullstacklabs",
-        "projectKey": "aws-cdk-example"
+        "projectKey": "mike-tajmajer-fullstacklabs_aws-cdk-example"
     }
 }
