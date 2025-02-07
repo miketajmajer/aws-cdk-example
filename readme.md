@@ -12,6 +12,8 @@ Created an IAM user aws-cli with access key (not the IAM Identity Center!)
 
 Created user, set to us-east-1/json and ready to go!
 
+note: [setup cdk user via env](https://docs.aws.amazon.com/cli/v1/userguide/cli-configure-envvars.html)
+
 ## Setup
 
 We don't have a package.json, so we install the packages globally.
