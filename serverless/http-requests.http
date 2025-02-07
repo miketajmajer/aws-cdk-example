@@ -2,3 +2,9 @@
 
 GET https://69dstswos3.execute-api.us-east-1.amazonaws.com/prod/hello
 ###
+
+GET https://69dstswos3.execute-api.us-east-1.amazonaws.com/prod/spaces
+###
+
+POST https://69dstswos3.execute-api.us-east-1.amazonaws.com/prod/spaces
+###
