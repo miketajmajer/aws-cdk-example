@@ -9,5 +9,5 @@ const lambda = new LambdaStack(app, "LambdaStack", {
   dataTable: dataTable.table,
 });
 new ApiStack(app, "HelloApi", {
-  helloLambdaIntegration: lambda.helloLambdaIntegration
+  helloLambdaIntegration: lambda.helloIntegration
 });
