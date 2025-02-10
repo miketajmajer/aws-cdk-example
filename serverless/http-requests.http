@@ -1,7 +1,14 @@
 # Lambda Functions
 
-GET https://at56j47ww2.execute-api.us-east-1.amazonaws.com/prod/spaces
+GET https://9r1k47okme.execute-api.us-east-1.amazonaws.com/prod/spaces?id=9d2ff02a-19bd-4371-9e4d-f211cfe3c660
 ###
 
-POST https://at56j47ww2.execute-api.us-east-1.amazonaws.com/prod/spaces
+POST https://9r1k47okme.execute-api.us-east-1.amazonaws.com/prod/spaces
+Content-Type: application/json
+
+{
+  "location": "New Mexico",
+  "name": "My Space",
+  "description": "This is my space"
+}
 ###

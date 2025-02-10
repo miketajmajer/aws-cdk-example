@@ -1,20 +1,33 @@
 import { APIGatewayProxyEvent, Context, APIGatewayProxyResult } from "aws-lambda";
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { getHandler } from "./getHandler";
+import { postHandler } from "./postHandler";
+
+const ddbClient = new DynamoDBClient({ region: 'us-east-1' });
 
 async function handler(event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult> {
-  let message: string = "none";
-  switch(event.httpMethod) {
-    case 'GET':
-      message = "Hello from GET";
-      break;
-    case 'POST':
-      message = "Hello from POST";
-      break;
+  let result: APIGatewayProxyResult = {
+    statusCode: 400,
+    body: JSON.stringify({ message: 'Invalid Verb' }),
+  };
+
+  try {
+    switch(event.httpMethod) {
+      case 'GET':
+        result = await getHandler(event, ddbClient);
+        break;
+      case 'POST':
+        result = await postHandler(event, ddbClient);
+        break;
+    }
+  } catch (error: any) {
+    result = {
+      statusCode: 500,
+      body: JSON.stringify({ error: error.message }),
+    };
   }
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ message }),
-  } as APIGatewayProxyResult;
+  return result
 }
 
 export { handler };
