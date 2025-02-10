@@ -2,12 +2,14 @@ import { handler } from "../src/services/spaces/handler";
 
 // run lambda
 handler({
-  httpMethod: 'GET',
+  httpMethod: 'DELETE',
+  //httpMethod: 'PUT',
+  //httpMethod: 'GET',
   //httpMethod: 'POST',
   queryStringParameters: {
-    id: 'c2e43fd5-84e2-476c-82e9-48a527c43d97',
+    id: '2571d2e6-218f-4b3f-95e6-0e81c297a5b5',
   },
-  //body: JSON.stringify({ location: "Albuquerque, New Mexico" })
+  body: JSON.stringify({ location: "South Broadway, Albuquerque, New Mexico" })
 } as any, {} as any).then(result => {
   console.log(result);
 });

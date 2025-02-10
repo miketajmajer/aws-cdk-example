@@ -26,7 +26,7 @@ async function getHandler(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient
 
     return {
       statusCode: 200,
-      body: JSON.stringify(result?.Items?.map((m) => unmarshall(m))),
+      body: JSON.stringify(result.Items?.map((m) => unmarshall(m))),
     } as APIGatewayProxyResult;
   }
 }

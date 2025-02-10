@@ -2,6 +2,8 @@ import { APIGatewayProxyEvent, Context, APIGatewayProxyResult } from "aws-lambda
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { getHandler } from "./getHandler";
 import { postHandler } from "./postHandler";
+import { putHandler } from "./putHandler";
+import { deleteHandler } from "./deleteHandler";
 
 const ddbClient = new DynamoDBClient({ region: 'us-east-1' });
 
@@ -18,6 +20,12 @@ async function handler(event: APIGatewayProxyEvent, context: Context): Promise<A
         break;
       case 'POST':
         result = await postHandler(event, ddbClient);
+        break;
+      case 'PUT':
+        result = await putHandler(event, ddbClient);
+        break;
+      case 'DELETE':
+        result = await deleteHandler(event, ddbClient);
         break;
     }
   } catch (error: any) {
