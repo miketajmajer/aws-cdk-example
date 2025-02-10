@@ -7,7 +7,7 @@ async function deleteHandler(event: APIGatewayProxyEvent, ddbClient: DynamoDBCli
   if (!id) {
     return {
       statusCode: 422,
-      body: JSON.stringify({ message: 'id parameter not provided' }),
+      body: JSON.stringify('id parameter not provided'),
     } as APIGatewayProxyResult;
   }
 

@@ -4,13 +4,14 @@ import { getHandler } from "./getHandler";
 import { postHandler } from "./postHandler";
 import { putHandler } from "./putHandler";
 import { deleteHandler } from "./deleteHandler";
+import { MissingFieldError } from "../shared/spaceValidator";
 
 const ddbClient = new DynamoDBClient({ region: 'us-east-1' });
 
 async function handler(event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult> {
   let result: APIGatewayProxyResult = {
     statusCode: 400,
-    body: JSON.stringify({ message: 'Invalid Verb' }),
+    body: JSON.stringify('Invalid Verb'),
   };
 
   try {
@@ -29,10 +30,17 @@ async function handler(event: APIGatewayProxyEvent, context: Context): Promise<A
         break;
     }
   } catch (error: any) {
-    result = {
-      statusCode: 500,
-      body: JSON.stringify({ error: error.message }),
-    };
+    if (error instanceof MissingFieldError) {
+      result = {
+        statusCode: 400,
+        body: JSON.stringify(error.message),
+      };
+    } else {
+      result = {
+        statusCode: 500,
+        body: JSON.stringify(error.message),
+      };
+    }
   }
 
   return result

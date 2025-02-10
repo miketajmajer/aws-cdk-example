@@ -12,7 +12,7 @@ async function getHandler(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient
     if (!result.Item) {
       return {
         statusCode: 404,
-        body: JSON.stringify({ message: 'id not found' }),
+        body: JSON.stringify('id not found'),
       } as APIGatewayProxyResult;
     }
     return {
