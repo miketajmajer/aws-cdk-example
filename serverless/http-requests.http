@@ -1,7 +1,7 @@
 # Lambda Functions
 
 @api-url=9r1k47okme.execute-api.us-east-1.amazonaws.com/prod
-@id=0d86a859-305f-4c71-a293-7752d718440a
+@id=33fd9b56-4578-4bee-b253-02ef85a4f3dc
 
 
 GET https://{{api-url}}/spaces
@@ -21,10 +21,12 @@ Content-Type: application/json
     "name": "My Space"
 }
 ###
+
 PUT https://{{api-url}}/spaces?id={{id}}
 Content-Type: application/json
 
 {
-    "location": "South Briadway, Albuquerque, New Mexico"
+    "name": "South Broadway, Albuquerque, New Mexico",
+    "location": "South Broadway, Albuquerque, New Mexico"
 }
 ###

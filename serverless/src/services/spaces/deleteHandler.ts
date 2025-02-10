@@ -17,7 +17,7 @@ async function deleteHandler(event: APIGatewayProxyEvent, ddbClient: DynamoDBCli
   }));
 
   return {
-    statusCode: 200,
+    statusCode: 200, // could be a 204, but we want to show the result body
     body: JSON.stringify(`deleted ${id}`),
   } as APIGatewayProxyResult;
 }

@@ -32,7 +32,7 @@ async function putHandler(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient
   }));
 
   return {
-    statusCode: 204,
+    statusCode: 202, // accepted, returning a 204 does not return the body
     body: JSON.stringify(result.Attributes),
   } as APIGatewayProxyResult;
 }
