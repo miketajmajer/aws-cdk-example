@@ -7,7 +7,7 @@ async function putHandler(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient
   if (!id || !event.body) {
     return {
       statusCode: 422,
-      body: JSON.stringify('id parameter not provided'),
+      body: JSON.stringify({ message: 'id parameter not provided' }),
     } as APIGatewayProxyResult;
   }
 

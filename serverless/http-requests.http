@@ -1,25 +1,30 @@
 # Lambda Functions
 
+@api-url=9r1k47okme.execute-api.us-east-1.amazonaws.com/prod
 @id=0d86a859-305f-4c71-a293-7752d718440a
 
-GET https://9r1k47okme.execute-api.us-east-1.amazonaws.com/prod/spaces?id={{id}}
+
+GET https://{{api-url}}/spaces
 ###
 
-GET https://9r1k47okme.execute-api.us-east-1.amazonaws.com/prod/spaces
+GET https://{{api-url}}/spaces?id={{id}}
 ###
 
-POST https://9r1k47okme.execute-api.us-east-1.amazonaws.com/prod/spaces
+DELETE https://{{api-url}}/spaces?id={{id}}
+###
+
+POST https://{{api-url}}/spaces
 Content-Type: application/json
 
 {
-  "location": "New Mexico",
-  "name": "My Space"
+    "location": "New Mexico",
+    "name": "My Space"
 }
 ###
-PUT https://9r1k47okme.execute-api.us-east-1.amazonaws.com/prod/spaces?id={{id}}
+PUT https://{{api-url}}/spaces?id={{id}}
 Content-Type: application/json
 
 {
-  "location": "South Briadway, Albuquerque, New Mexico"
+    "location": "South Briadway, Albuquerque, New Mexico"
 }
 ###

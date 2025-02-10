@@ -3,10 +3,11 @@ import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
 import { marshall } from '@aws-sdk/util-dynamodb';
 import { v4 } from "uuid";
 import { validateAsSpaceEntry } from "../shared/spaceValidator";
+import { parseJSON } from "../shared/utils";
 
 async function postHandler(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient): Promise<APIGatewayProxyResult> {
   const randomId = v4();
-  const item = JSON.parse(event.body ?? '{}');
+  const item = parseJSON(event.body ?? ''); // the empty string will cause a JSONParseError
   item.id = randomId;
 
   if (validateAsSpaceEntry(item)) {
