@@ -7,14 +7,8 @@
 # Variables in user settings
 # aws_username
 # aws_password
-
-# ==================================================================================================
-#
-#AuthStack.SpaceUserPoolClientId = 120roe2g6emr15vl8bs1u4tlhs
-#AuthStack.SpaceUserPoolId = us-east-1_wFFkzqFBH
-#
-#aws cognito-idp admin-set-user-password --user-pool-id us-east-1_wFFkzqFBH --username "user name" --password "password here" --permanent
-# ==================================================================================================
+# AuthStack_SpaceUserPoolClientId
+# ß
 
 GET https://{{api-url}}/spaces
 ###

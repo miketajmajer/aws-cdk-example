@@ -131,3 +131,9 @@ export const handler = async () => {
 This way the secret is pulled from the AWS Secrets Manager, and never
 visiable in the CDK and only accessable due to the explicet granting access to the lambda service.
 
+## Cognito Authorization
+
+# How to fix a user
+```
+aws cognito-idp admin-set-user-password --user-pool-id "pool id" --username "user name" --password "password here" --permanent
+```
