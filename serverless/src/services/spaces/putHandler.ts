@@ -1,8 +1,17 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { DynamoDBClient, UpdateItemCommand } from '@aws-sdk/client-dynamodb';
 import { marshall } from '@aws-sdk/util-dynamodb';
+import { hasGroup, SpacesGroups } from "../../infra/Utils";
 
 async function putHandler(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient): Promise<APIGatewayProxyResult> {
+  const isAuthorised = hasGroup(event, SpacesGroups.users);
+  if (!isAuthorised) {
+    return {
+      statusCode: 403,
+      body: JSON.stringify('forbidden'),
+    } as APIGatewayProxyResult;
+  }
+
   const id = event?.queryStringParameters?.id;
   if (!id || !event.body) {
     return {
