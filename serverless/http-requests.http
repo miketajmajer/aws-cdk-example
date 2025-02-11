@@ -2,19 +2,30 @@
 
 @api-url=9r1k47okme.execute-api.us-east-1.amazonaws.com/prod
 @id=33fd9b56-4578-4bee-b253-02ef85a4f3dc
+@token=12345
 
+# ==================================================================================================
+#
+#AuthStack.SpaceUserPoolClientId = 120roe2g6emr15vl8bs1u4tlhs
+#AuthStack.SpaceUserPoolId = us-east-1_wFFkzqFBH
+#
+#aws cognito-idp admin-set-user-password --user-pool-id us-east-1_wFFkzqFBH --username testuser --password "Tu@12345aws" --permanent
+# ==================================================================================================
 
 GET https://{{api-url}}/spaces
 ###
 
 GET https://{{api-url}}/spaces?id={{id}}
+Authorization: {{token}}
 ###
 
 DELETE https://{{api-url}}/spaces?id={{id}}
+Authorization: {{token}}
 ###
 
 POST https://{{api-url}}/spaces
 Content-Type: application/json
+Authorization: {{token}}
 
 {
     "location": "New Mexico",
@@ -24,6 +35,7 @@ Content-Type: application/json
 
 PUT https://{{api-url}}/spaces?id={{id}}
 Content-Type: application/json
+Authorization: {{token}}
 
 {
     "name": "South Broadway, Albuquerque, New Mexico",
