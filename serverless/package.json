@@ -3,18 +3,28 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "tsc -w"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.147",
     "@types/node": "^22.13.1",
+    "@types/uuid": "^10.0.0",
     "aws-cdk": "^2.178.0",
     "aws-cdk-lib": "^2.178.0",
     "constructs": "^10.4.2",
+    "esbuild": "^0.24.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.744.0",
+    "@aws-sdk/client-s3": "^3.743.0",
+    "@aws-sdk/util-dynamodb": "^3.744.0",
+    "uuid": "^11.0.5"
   }
 }

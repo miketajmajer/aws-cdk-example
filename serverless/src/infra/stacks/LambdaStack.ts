@@ -1,28 +1,52 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
+import { Stack, StackProps } from 'aws-cdk-lib'
 import { LambdaIntegration } from 'aws-cdk-lib/aws-apigateway';
 import { ITable } from 'aws-cdk-lib/aws-dynamodb';
-import { Code, Function as LambdaFunction, Runtime } from 'aws-cdk-lib/aws-lambda';
+import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { Runtime} from 'aws-cdk-lib/aws-lambda';
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
 import { join } from 'path';
 
-export interface LambdaStackProps extends StackProps {
-  dataTable: ITable;
+interface LambdaStackProps extends StackProps {
+    spacesTable: ITable
 }
 
 export class LambdaStack extends Stack {
-  public readonly helloLambdaIntegration;
-  constructor(scope: Construct, id: string, props: LambdaStackProps) {
-    super(scope, id, props);
 
-    const helloLambda = new LambdaFunction(this, 'HelloLambda', {
-      runtime: Runtime.NODEJS_22_X,
-      handler: 'hello.main',
-      code: Code.fromAsset(join(__dirname, '..', '..', 'services')),
-      environment: {
-        TABLE_NAME: props.dataTable.tableName,
-      }
-    });
+    public readonly spacesLambdaIntegration: LambdaIntegration
 
-    this.helloLambdaIntegration = new LambdaIntegration(helloLambda);
-  }
+    constructor(scope: Construct, id: string, props: LambdaStackProps) {
+        super(scope, id, props)
+
+
+        const spacesLambda = new NodejsFunction(this, 'SpacesLambda', {
+            runtime: Runtime.NODEJS_18_X,
+            handler: 'handler',
+            entry: (join(__dirname, '..','..', 'services', 'spaces', 'handler.ts')),
+            environment: {
+                TABLE_NAME: props.spacesTable.tableName,
+                NODE_OPTIONS: "--enable-source-maps",
+            },
+            bundling: {
+              minify: false,
+              sourceMap: true,
+              sourcesContent: true
+            }
+        });
+
+        this.spacesLambdaIntegration = new LambdaIntegration(spacesLambda);
+
+        // ensure that the lambda can read/write to the dynamodb table
+        spacesLambda.addToRolePolicy(new PolicyStatement({
+          effect: Effect.ALLOW,
+          resources: [props.spacesTable.tableArn],
+          actions: [
+            'dynamodb:GetItem',
+            'dynamodb:PutItem',
+            'dynamodb:Scan',
+            'dynamodb:UpdateItem',
+            'dynamodb:DeleteItem',
+          ],
+        }));
+    }
 }
