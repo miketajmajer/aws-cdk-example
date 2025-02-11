@@ -4,12 +4,16 @@
 @id=33fd9b56-4578-4bee-b253-02ef85a4f3dc
 @token=12345
 
+# Variables in user settings
+# aws_username
+# aws_password
+
 # ==================================================================================================
 #
 #AuthStack.SpaceUserPoolClientId = 120roe2g6emr15vl8bs1u4tlhs
 #AuthStack.SpaceUserPoolId = us-east-1_wFFkzqFBH
 #
-#aws cognito-idp admin-set-user-password --user-pool-id us-east-1_wFFkzqFBH --username testuser --password "Tu@12345aws" --permanent
+#aws cognito-idp admin-set-user-password --user-pool-id us-east-1_wFFkzqFBH --username "user name" --password "password here" --permanent
 # ==================================================================================================
 
 GET https://{{api-url}}/spaces
