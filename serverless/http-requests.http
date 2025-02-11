@@ -1,4 +1,32 @@
 # Lambda Functions
 
-GET https://69dstswos3.execute-api.us-east-1.amazonaws.com/prod/hello
+@api-url=9r1k47okme.execute-api.us-east-1.amazonaws.com/prod
+@id=33fd9b56-4578-4bee-b253-02ef85a4f3dc
+
+
+GET https://{{api-url}}/spaces
+###
+
+GET https://{{api-url}}/spaces?id={{id}}
+###
+
+DELETE https://{{api-url}}/spaces?id={{id}}
+###
+
+POST https://{{api-url}}/spaces
+Content-Type: application/json
+
+{
+    "location": "New Mexico",
+    "name": "My Space"
+}
+###
+
+PUT https://{{api-url}}/spaces?id={{id}}
+Content-Type: application/json
+
+{
+    "name": "South Broadway, Albuquerque, New Mexico",
+    "location": "South Broadway, Albuquerque, New Mexico"
+}
 ###

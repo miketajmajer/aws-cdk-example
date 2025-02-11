@@ -4,10 +4,10 @@ import { LambdaStack } from "./stacks/LambdaStack";
 import { ApiStack } from "./stacks/ApiStack";
 
 const app = new App();
-const dataTable = new DataStack(app, "DataStack");
-const lambda = new LambdaStack(app, "LambdaStack", {
-  dataTable: dataTable.table,
-});
-new ApiStack(app, "HelloApi", {
-  helloLambdaIntegration: lambda.helloLambdaIntegration
-});
+const dataStack = new DataStack(app, 'DataStack');
+const lambdaStack = new LambdaStack(app, 'LambdaStack', {
+    spacesTable: dataStack.spacesTable
+})
+new ApiStack(app, 'ApiStack', {
+    spacesLambdaIntegration: lambdaStack.spacesLambdaIntegration
+})
