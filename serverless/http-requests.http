@@ -16,7 +16,6 @@
 POST https://cognito-idp.us-east-1.amazonaws.com/{{AuthStack_SpaceUserPoolId}}
 Content-Type: application/x-amz-json-1.1
 x-amz-target: AWSCognitoIdentityProviderService.InitiateAuth
-Authorization: COGNITO {{aws_username}}:{{aws_password}}:us-east-1:{{AuthStack_SpaceUserPoolId}}:{{AuthStack_SpaceUserPoolClientId}}
 
 {
     "AuthFlow": "USER_PASSWORD_AUTH",
