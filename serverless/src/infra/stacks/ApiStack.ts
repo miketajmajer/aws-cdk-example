@@ -15,16 +15,16 @@ export class ApiStack extends Stack {
 
         const api = new RestApi(this, 'SpacesApi');
 
-        const authorizer = new CognitoUserPoolsAuthorizer(this, 'SpacesApiAuthorizer', {
+        const idTokenAuthorizer = new CognitoUserPoolsAuthorizer(this, 'SpacesApiAuthorizer', {
           cognitoUserPools: [props.userPool],
           identitySource: 'method.request.header.Authorization',
         });
-        authorizer._attachToApi(api);
+        idTokenAuthorizer._attachToApi(api);
 
         const optionsWithAuth: MethodOptions = {
           authorizationType: AuthorizationType.COGNITO,
           authorizer: {
-            authorizerId: authorizer.authorizerId
+            authorizerId: idTokenAuthorizer.authorizerId,
           },
         };
 

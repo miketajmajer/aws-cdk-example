@@ -25,7 +25,6 @@ export class AuthStack extends Stack {
                 email: true
             }
         });
-
         new CfnOutput(this, 'SpaceUserPoolId', {
             value: this.userPool.userPoolId
         })

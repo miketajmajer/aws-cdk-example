@@ -28,7 +28,7 @@ x-amz-target: AWSCognitoIdentityProviderService.InitiateAuth
 ###
 
 GET https://{{api-url}}/spaces
-Authorization: {{login.response.body.AuthenticationResult.IdToken}}
+Authorization: Bearer {{login.response.body.AuthenticationResult.IdToken}}
 ###
 
 GET https://{{api-url}}/spaces?id={{id}}
