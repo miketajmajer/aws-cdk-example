@@ -6,16 +6,3 @@ export function getSuffixFromStack(stack: Stack){
     const suffix = Fn.select(4, Fn.split('-', shortStackId));
     return suffix;
 }
-
-export enum SpacesGroups {
-  admins = 'admins',
-  users = 'users',
-}
-
-export function hasGroup(event: APIGatewayProxyEvent, group: SpacesGroups): boolean {
-  const groups = event.requestContext.authorizer?.claims['cognito:groups'];
-  if (!groups) {
-    return false;
-  }
-  return groups.includes(SpacesGroups[group]);
-}

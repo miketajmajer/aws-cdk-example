@@ -1,7 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { DynamoDBClient, GetItemCommand, ScanCommand } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
-import { hasGroup, SpacesGroups } from "../../infra/Utils";
+import { hasGroup, SpacesGroups } from "../shared/utils";
 
 async function getHandler(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient): Promise<APIGatewayProxyResult> {
   const isAuthorised = hasGroup(event, SpacesGroups.users);

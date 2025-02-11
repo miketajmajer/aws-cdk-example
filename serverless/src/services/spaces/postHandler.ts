@@ -3,8 +3,7 @@ import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
 import { marshall } from '@aws-sdk/util-dynamodb';
 import { v4 } from "uuid";
 import { validateAsSpaceEntry } from "../shared/spaceValidator";
-import { parseJSON } from "../shared/utils";
-import { hasGroup, SpacesGroups } from "../../infra/Utils";
+import { hasGroup, SpacesGroups, parseJSON } from "../shared/utils";
 
 async function postHandler(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient): Promise<APIGatewayProxyResult> {
   const isAuthorised = hasGroup(event, SpacesGroups.users);
