@@ -1,7 +1,9 @@
 # Lambda Functions
 
+@cognito=cognito-idp.us-east-1.amazonaws.com
+@cognitoIdentity=cognito-identity.us-east-1.amazonaws.com
 @api-url=9r1k47okme.execute-api.us-east-1.amazonaws.com/prod
-@id=33fd9b56-4578-4bee-b253-02ef85a4f3dc
+@id=0d86a859-305f-4c71-a293-7752d718440a
 
 # ====================================
 # Variables in user settings
@@ -13,7 +15,7 @@
 # ====================================
 
 # @name login
-POST https://cognito-idp.us-east-1.amazonaws.com/{{AuthStack_SpaceUserPoolId}}
+POST https://{{cognito}}/{{AuthStack_SpaceUserPoolId}}
 Content-Type: application/x-amz-json-1.1
 x-amz-target: AWSCognitoIdentityProviderService.InitiateAuth
 
@@ -24,6 +26,32 @@ x-amz-target: AWSCognitoIdentityProviderService.InitiateAuth
         "PASSWORD": "{{aws_password}}"
     },
     "ClientId": "{{AuthStack_SpaceUserPoolClientId}}"
+}
+###
+
+# @name delegate_id
+POST https://{{cognitoIdentity}}/
+Content-Type: application/x-amz-json-1.1
+x-amz-target: AWSCognitoIdentityService.GetId
+
+{
+  "IdentityPoolId": "us-east-1:29bfe108-e0e0-4ca9-bc67-2a00270a94f2",
+  "Logins": {
+    "cognito-idp.us-east-1.amazonaws.com/us-east-1_wFFkzqFBH": "{{login.response.body.AuthenticationResult.IdToken}}"
+  }
+}
+###
+
+# @name delegate_token
+POST https://{{cognitoIdentity}}/
+Content-Type: application/x-amz-json-1.1
+x-amz-target: AWSCognitoIdentityService.GetCredentialsForIdentity
+
+{
+  "IdentityId": "{{delegate_id.response.body.IdentityId}}",
+  "Logins": {
+    "cognito-idp.us-east-1.amazonaws.com/us-east-1_wFFkzqFBH": "{{login.response.body.AuthenticationResult.IdToken}}"
+  }
 }
 ###
 
