@@ -3,18 +3,45 @@
 @api-url=9r1k47okme.execute-api.us-east-1.amazonaws.com/prod
 @id=33fd9b56-4578-4bee-b253-02ef85a4f3dc
 
+# ====================================
+# Variables in user settings
+#
+# aws_username
+# aws_password
+# AuthStack_SpaceUserPoolClientId
+# AuthStack_SpaceUserPoolId
+# ====================================
+
+# @name login
+POST https://cognito-idp.us-east-1.amazonaws.com/{{AuthStack_SpaceUserPoolId}}
+Content-Type: application/x-amz-json-1.1
+x-amz-target: AWSCognitoIdentityProviderService.InitiateAuth
+
+{
+    "AuthFlow": "USER_PASSWORD_AUTH",
+    "AuthParameters": {
+        "USERNAME": "{{aws_username}}",
+        "PASSWORD": "{{aws_password}}"
+    },
+    "ClientId": "{{AuthStack_SpaceUserPoolClientId}}"
+}
+###
 
 GET https://{{api-url}}/spaces
+Authorization: Bearer {{login.response.body.AuthenticationResult.IdToken}}
 ###
 
 GET https://{{api-url}}/spaces?id={{id}}
+Authorization: {{login.response.body.AuthenticationResult.IdToken}}
 ###
 
 DELETE https://{{api-url}}/spaces?id={{id}}
+Authorization: {{login.response.body.AuthenticationResult.IdToken}}
 ###
 
 POST https://{{api-url}}/spaces
 Content-Type: application/json
+Authorization: {{login.response.body.AuthenticationResult.IdToken}}
 
 {
     "location": "New Mexico",
@@ -24,6 +51,7 @@ Content-Type: application/json
 
 PUT https://{{api-url}}/spaces?id={{id}}
 Content-Type: application/json
+Authorization: {{login.response.body.AuthenticationResult.IdToken}}
 
 {
     "name": "South Broadway, Albuquerque, New Mexico",

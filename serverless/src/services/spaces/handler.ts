@@ -9,13 +9,16 @@ import { JSONParseError } from "../shared/utils";
 
 const ddbClient = new DynamoDBClient({ region: 'us-east-1' });
 
-async function handler(event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult> {
+async function handler(event: APIGatewayProxyEvent, _context: Context): Promise<APIGatewayProxyResult> {
   let result: APIGatewayProxyResult = {
     statusCode: 400,
     body: 'Invalid Verb',
   };
 
+  console.log('Spaces API Handler Entered');
+
   try {
+    console.log(`Spaces API: ${event.httpMethod}`);
     switch(event.httpMethod) {
       case 'GET':
         result = await getHandler(event, ddbClient);
@@ -47,6 +50,8 @@ async function handler(event: APIGatewayProxyEvent, context: Context): Promise<A
         body: error.message,
       };
     }
+  } finally {
+    console.log('Spaces API Handler Exited');
   }
 
   return result
