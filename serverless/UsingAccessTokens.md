@@ -1,5 +1,7 @@
 # AWS AccessToken vs idToken
 
+Note: this [article about Fine-grained access control in API Gateway with Cognito access token and scopes](https://medium.com/theburningmonk-com/fine-grained-access-control-in-api-gateway-with-cognito-access-token-and-scopes-bef054e4dece) has good info too!
+
 Taken from: https://stackoverflow.com/questions/50404761/aws-api-gateway-using-access-token-with-cognito-user-pool-authorizer
 
 If anyone was curious how to accomplish this in CDK, here’s how I managed to create an API that accepts an auth token as part of the Authorization header. There's some good information above on how it works conceptually. As the AWS CDK documentation was inevitably lacking, I figured out the CDK way by looking for constructs that mapped to the concepts mentioned above and iteratively adding the right constructs to the api and user pools.
