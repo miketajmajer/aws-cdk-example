@@ -37,7 +37,7 @@ x-amz-target: AWSCognitoIdentityService.GetId
 {
   "IdentityPoolId": "us-east-1:29bfe108-e0e0-4ca9-bc67-2a00270a94f2",
   "Logins": {
-    "cognito-idp.us-east-1.amazonaws.com/us-east-1_wFFkzqFBH": "{{login.response.body.AuthenticationResult.IdToken}}"
+    "{{cognito}}/{{AuthStack_SpaceUserPoolId}}": "{{login.response.body.AuthenticationResult.IdToken}}"
   }
 }
 ###
@@ -50,13 +50,17 @@ x-amz-target: AWSCognitoIdentityService.GetCredentialsForIdentity
 {
   "IdentityId": "{{delegate_id.response.body.IdentityId}}",
   "Logins": {
-    "cognito-idp.us-east-1.amazonaws.com/us-east-1_wFFkzqFBH": "{{login.response.body.AuthenticationResult.IdToken}}"
+    "{{cognito}}/{{AuthStack_SpaceUserPoolId}}": "{{login.response.body.AuthenticationResult.IdToken}}"
   }
 }
 ###
 
 GET https://{{api-url}}/spaces
 Authorization: Bearer {{login.response.body.AuthenticationResult.IdToken}}
+###
+
+GET https://{{api-url}}/spaces
+Authorization: Bearer {{delegate_token.response.body.Credentials.SessionToken}}
 ###
 
 GET https://{{api-url}}/spaces?id={{id}}
