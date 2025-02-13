@@ -2,20 +2,21 @@
 
 @cognito=cognito-idp.us-east-1.amazonaws.com
 @cognitoIdentity=cognito-identity.us-east-1.amazonaws.com
-@api-url=9r1k47okme.execute-api.us-east-1.amazonaws.com/prod
-@id=0d86a859-305f-4c71-a293-7752d718440a
+@api-url=al5rm1kscg.execute-api.us-east-1.amazonaws.com/prod/
+@id=9157a402-60d4-4cdf-b861-91dab06b4794
 
 # ====================================
 # Variables in user settings
 #
 # aws_username
 # aws_password
-# AuthStack_SpaceUserPoolClientId
-# AuthStack_SpaceUserPoolId
+# SpaceUserPoolId
+# SpaceUserPoolClientId
+# SpacesIdentityPoolId
 # ====================================
 
 # @name login
-POST https://{{cognito}}/{{AuthStack_SpaceUserPoolId}}
+POST https://{{cognito}}/{{SpaceUserPoolId}}
 Content-Type: application/x-amz-json-1.1
 x-amz-target: AWSCognitoIdentityProviderService.InitiateAuth
 
@@ -25,7 +26,7 @@ x-amz-target: AWSCognitoIdentityProviderService.InitiateAuth
         "USERNAME": "{{aws_username}}",
         "PASSWORD": "{{aws_password}}"
     },
-    "ClientId": "{{AuthStack_SpaceUserPoolClientId}}"
+    "ClientId": "{{SpaceUserPoolClientId}}"
 }
 ###
 
@@ -35,9 +36,9 @@ Content-Type: application/x-amz-json-1.1
 x-amz-target: AWSCognitoIdentityService.GetId
 
 {
-  "IdentityPoolId": "us-east-1:29bfe108-e0e0-4ca9-bc67-2a00270a94f2",
+  "IdentityPoolId": "{{SpacesIdentityPoolId}}",
   "Logins": {
-    "{{cognito}}/{{AuthStack_SpaceUserPoolId}}": "{{login.response.body.AuthenticationResult.IdToken}}"
+    "{{cognito}}/{{SpaceUserPoolId}}": "{{login.response.body.AuthenticationResult.IdToken}}"
   }
 }
 ###
@@ -50,28 +51,28 @@ x-amz-target: AWSCognitoIdentityService.GetCredentialsForIdentity
 {
   "IdentityId": "{{delegate_id.response.body.IdentityId}}",
   "Logins": {
-    "{{cognito}}/{{AuthStack_SpaceUserPoolId}}": "{{login.response.body.AuthenticationResult.IdToken}}"
+    "{{cognito}}/{{SpaceUserPoolId}}": "{{login.response.body.AuthenticationResult.IdToken}}"
   }
 }
 ###
 
-GET https://{{api-url}}/spaces
+GET {{SpacesApiEndpoint}}/spaces
 Authorization: Bearer {{login.response.body.AuthenticationResult.IdToken}}
 ###
 
-GET https://{{api-url}}/spaces
-Authorization: Bearer {{delegate_token.response.body.Credentials.SessionToken}}
+# GET {{SpacesApiEndpoint}}/spaces
+# Authorization: AWS4-HMAC-SHA256 Credential={{delegate_token.response.body.Credentials.AccessKeyId}}, SignedHeaders=host;x-amz-date, Signature={{delegate_token.response.body.Credentials.SessionToken}}
 ###
 
-GET https://{{api-url}}/spaces?id={{id}}
+GET {{SpacesApiEndpoint}}/spaces?id={{id}}
 Authorization: {{login.response.body.AuthenticationResult.IdToken}}
 ###
 
-DELETE https://{{api-url}}/spaces?id={{id}}
+DELETE {{SpacesApiEndpoint}}/spaces?id={{id}}
 Authorization: {{login.response.body.AuthenticationResult.IdToken}}
 ###
 
-POST https://{{api-url}}/spaces
+POST {{SpacesApiEndpoint}}/spaces
 Content-Type: application/json
 Authorization: {{login.response.body.AuthenticationResult.IdToken}}
 
@@ -81,12 +82,11 @@ Authorization: {{login.response.body.AuthenticationResult.IdToken}}
 }
 ###
 
-PUT https://{{api-url}}/spaces?id={{id}}
+PUT {{SpacesApiEndpoint}}/spaces?id={{id}}
 Content-Type: application/json
 Authorization: {{login.response.body.AuthenticationResult.IdToken}}
 
 {
-    "name": "South Broadway, Albuquerque, New Mexico",
     "location": "South Broadway, Albuquerque, New Mexico"
 }
 ###

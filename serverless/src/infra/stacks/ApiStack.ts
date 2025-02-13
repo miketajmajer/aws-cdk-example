@@ -28,6 +28,13 @@ export class ApiStack extends Stack {
           },
         };
 
+        // const optionsWithAuthIAM: MethodOptions = {
+        //   authorizationType: AuthorizationType.IAM,
+        //   authorizer: {
+        //     authorizerId: idTokenAuthorizer.authorizerId,
+        //   },
+        // };
+
         const spacesResource = api.root.addResource('spaces');
         spacesResource.addMethod('GET', props.spacesLambdaIntegration, optionsWithAuth);
         spacesResource.addMethod('POST', props.spacesLambdaIntegration, optionsWithAuth);

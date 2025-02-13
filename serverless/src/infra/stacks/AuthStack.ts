@@ -6,7 +6,12 @@ import {
   UserPool,
   UserPoolClient,
 } from "aws-cdk-lib/aws-cognito";
-import { Effect, FederatedPrincipal, PolicyStatement, Role } from "aws-cdk-lib/aws-iam";
+import {
+  Effect,
+  FederatedPrincipal,
+  PolicyStatement,
+  Role,
+} from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 
 export class AuthStack extends Stack {
@@ -87,6 +92,34 @@ export class AuthStack extends Stack {
   }
 
   private createRoles() {
+    this.adminRole = new Role(this, "CognitoAdminRole", {
+      assumedBy: new FederatedPrincipal(
+        "cognito-identity.amazonaws.com",
+        {
+          StringEquals: {
+            "cognito-identity.amazonaws.com:aud": this.identityPool.ref,
+
+          },
+          "ForAnyValue:StringLike": {
+            "cognito-identity.amazonaws.com:amr": "authenticated",
+            //"cognito-identity.amazonaws.com:roles": "arn:aws:iam::897729124168:role/AuthStack-CognitoDefaultAuthenticatedRoleC5D5C31E-9d2Y3xfyAaUb"
+            //"cognito-identity.amazonaws.com:group": ["users", "admins"],
+          },
+        },
+        "sts:AssumeRoleWithWebIdentity"
+      ),
+    });
+    new CfnOutput(this, "CognitoAdminRoleRoleArn", {
+      value: this.adminRole.roleArn,
+    });
+    this.adminRole.addToPolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ["s3:ListAllMyBuckets"],
+        resources: ["*"],
+      })
+    );
+
     this.authRole = new Role(this, "CognitoDefaultAuthenticatedRole", {
       assumedBy: new FederatedPrincipal(
         "cognito-identity.amazonaws.com",
@@ -101,6 +134,16 @@ export class AuthStack extends Stack {
         "sts:AssumeRoleWithWebIdentity"
       ),
     });
+    new CfnOutput(this, "SpacesIdenCognitoDefaultAuthenticatedRoleArn", {
+      value: this.authRole.roleArn,
+    });
+    // this.authRole.addToPolicy(
+    //   new PolicyStatement({
+    //     effect: Effect.ALLOW,
+    //     actions: ["s3:ListAllMyBuckets"],
+    //     resources: ["*"],
+    //   })
+    // );
 
     this.guestRole = new Role(this, "CognitoDefaultUnauthenticatedRole", {
       assumedBy: new FederatedPrincipal(
@@ -116,28 +159,9 @@ export class AuthStack extends Stack {
         "sts:AssumeRoleWithWebIdentity"
       ),
     });
-
-    this.adminRole = new Role(this, "CognitoAdminRole", {
-      assumedBy: new FederatedPrincipal(
-        "cognito-identity.amazonaws.com",
-        {
-          StringEquals: {
-            "cognito-identity.amazonaws.com:aud": this.identityPool.ref,
-          },
-          "ForAnyValue:StringLike": {
-            "cognito-identity.amazonaws.com:amr": "authenticated",
-          },
-        },
-        "sts:AssumeRoleWithWebIdentity"
-      ),
+    new CfnOutput(this, "CognitoDefaultUnauthenticatedRoleArn", {
+      value: this.guestRole.roleArn,
     });
-    this.adminRole.addToPolicy(new PolicyStatement({
-      effect: Effect.ALLOW,
-      actions: [
-        's3:ListAllMyBuckets',
-      ],
-      resources: ['*'],
-    }));
   }
 
   private attachRoles() {

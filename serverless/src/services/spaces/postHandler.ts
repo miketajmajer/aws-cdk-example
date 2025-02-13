@@ -3,16 +3,16 @@ import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
 import { marshall } from '@aws-sdk/util-dynamodb';
 import { v4 } from "uuid";
 import { validateAsSpaceEntry } from "../shared/spaceValidator";
-import { hasGroup, SpacesGroups, parseJSON } from "../shared/utils";
+import { parseJSON } from "../shared/utils";
 
 async function postHandler(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient): Promise<APIGatewayProxyResult> {
-  const isAuthorised = hasGroup(event, SpacesGroups.users);
-  if (!isAuthorised) {
-    return {
-      statusCode: 403,
-      body: JSON.stringify('forbidden'),
-    } as APIGatewayProxyResult;
-  }
+  // const isAuthorised = hasGroup(event, SpacesGroups.users);
+  // if (!isAuthorised) {
+  //   return {
+  //     statusCode: 403,
+  //     body: JSON.stringify('forbidden'),
+  //   } as APIGatewayProxyResult;
+  // }
 
   const randomId = v4();
   const item = parseJSON(event.body ?? ''); // the empty string will cause a JSONParseError

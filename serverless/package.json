@@ -27,8 +27,11 @@
     "@aws-sdk/client-dynamodb": "^3.744.0",
     "@aws-sdk/client-s3": "^3.743.0",
     "@aws-sdk/credential-providers": "^3.744.0",
+    "@aws-sdk/signature-v4": "^3.370.0",
+    "@aws-sdk/types": "^3.734.0",
     "@aws-sdk/util-dynamodb": "^3.744.0",
     "aws-amplify": "^6.12.3",
+    "crypto-js": "^4.2.0",
     "uuid": "^11.0.5"
   }
 }

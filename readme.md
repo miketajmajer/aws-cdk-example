@@ -137,3 +137,8 @@ visiable in the CDK and only accessable due to the explicet granting access to t
 ```
 aws cognito-idp admin-set-user-password --user-pool-id "pool id" --username "user name" --password "password here" --permanent
 ```
+
+# How to capture outputs from deploy
+```
+cdk deploy --all --outputs-file outputs.json
+```
