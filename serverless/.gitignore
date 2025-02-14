@@ -1,3 +1,4 @@
 node_modules
 cdk.out
 outputs.json
+src/values.ts

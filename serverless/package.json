@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "deploy": "cdk deploy --all --outputs-file outputs.json && ts-node ./scripts/deploy-etl.ts"
   },
   "keywords": [],
   "author": "",

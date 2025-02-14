@@ -2,13 +2,7 @@ import { Amplify } from "aws-amplify";
 import { SignInOutput, fetchAuthSession, signIn } from "@aws-amplify/auth";
 import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
-
-export const awsRegion = "us-east-1";
-export const spacesApiEndpoint = 'https://lki9rp3gpe.execute-api.us-east-1.amazonaws.com/prod/';
-
-const awsUserPoolId = "us-east-1_wdmTGT2BZ";
-const awsIdentityPoolId = "us-east-1:768704ec-3208-4d88-8789-9afaa15caec7";
-const awsUserPoolClientId = "34bfom4jb4cdqpngp05msqlskb";
+import { awsIdentityPoolId, awsRegion, awsUserPoolClientId, awsUserPoolId } from "../src/values";
 
 Amplify.configure({
   Auth: {
