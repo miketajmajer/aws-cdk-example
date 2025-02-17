@@ -1,4 +1,4 @@
-import { Stack, StackProps } from 'aws-cdk-lib'
+import { RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib'
 import { AttributeType, ITable, Table } from 'aws-cdk-lib/aws-dynamodb';
 import { Construct } from 'constructs';
 import { Bucket, IBucket } from 'aws-cdk-lib/aws-s3';
@@ -24,7 +24,8 @@ export class DataStack extends Stack {
             ignorePublicAcls: false,
             restrictPublicBuckets: false
           },
-          websiteIndexDocument: 'index.html'
+          websiteIndexDocument: 'index.html',
+          removalPolicy: RemovalPolicy.DESTROY,
         });
 
         this.spacesTable = new Table(this, 'SpacesTable', {

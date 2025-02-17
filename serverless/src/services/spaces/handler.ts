@@ -5,7 +5,7 @@ import { postHandler } from "./postHandler";
 import { putHandler } from "./putHandler";
 import { deleteHandler } from "./deleteHandler";
 import { MissingFieldError } from "../shared/spaceValidator";
-import { JSONParseError } from "../shared/utils";
+import { addCorsHeader, JSONParseError } from "../shared/utils";
 
 const ddbClient = new DynamoDBClient({ region: 'us-east-1' });
 
@@ -54,6 +54,7 @@ async function handler(event: APIGatewayProxyEvent, _context: Context): Promise<
     console.log('Spaces API Handler Exited');
   }
 
+  addCorsHeader(result);
   return result
 }
 
