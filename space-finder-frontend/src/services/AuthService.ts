@@ -4,7 +4,7 @@ import { AuthStack } from '../../../serverless/outputs.json';
 import { CognitoIdentityClient } from '@aws-sdk/client-cognito-identity';
 import { fromCognitoIdentityPool } from '@aws-sdk/credential-providers';
 
-const awsRegion = 'eu-west-1';
+const awsRegion = 'eu-east-1';
 
 Amplify.configure({
     Auth: {
@@ -61,7 +61,7 @@ export class AuthService {
                 clientConfig: {
                     region: awsRegion
                 },
-                identityPoolId: AuthStack.SpaceIdentityPoolId,
+                identityPoolId: AuthStack.SpacesIdentityPoolId,
                 logins: {
                     [cognitoIdentityPool]: this.jwtToken!
                 }

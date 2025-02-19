@@ -1,7 +1,8 @@
 import { BaseQueryMeta, createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import type { RootState } from './store';
-import { removeEtag, selectEtag, setEtag } from './etagSlice';
-import { selectIdToken } from './authSlice';
+
+import { selectIdToken } from '../slices/authSlice';
+import { removeEtag, selectEtag, setEtag } from '../slices/etagSlice';
+import type { RootState } from '../store/store';
 
 export interface SpaceEntry {
   id: string;

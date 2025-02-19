@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
 
-import { spaceApi } from './spaceApi'
-import { authSlice } from "./authSlice";
-import { etagSlice } from './etagSlice';
+import { spaceApi } from '../api/spaceApi'
+import { authSlice } from "../slices/authSlice";
+import { etagSlice } from '../slices/etagSlice';
 
 export const store = configureStore({
   // Add the generated reducer as a specific top-level slice

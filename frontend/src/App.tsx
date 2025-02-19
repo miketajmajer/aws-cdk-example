@@ -3,7 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import { useDispatch } from 'react-redux'
-import { authTokenChange } from './authSlice'
+import { authTokenChange } from './state/slices/authSlice'
 
 function App() {
   const [count, setCount] = useState(0)
