@@ -25,4 +25,5 @@ const etagSlice = createSlice({
 });
 
 export const { setEtag, removeEtag } = etagSlice.actions;
+export const { selectEtag } = etagSlice.selectors;
 export { etagSlice };

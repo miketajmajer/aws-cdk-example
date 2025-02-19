@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { spaceApi } from './spaceServiceApi'
 import { setupListeners } from '@reduxjs/toolkit/query'
+
+import { spaceApi } from './spaceApi'
 import { authSlice } from "./authSlice";
 import { etagSlice } from './etagSlice';
 

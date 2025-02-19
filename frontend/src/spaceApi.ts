@@ -1,7 +1,7 @@
 import { BaseQueryMeta, createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import type { RootState } from './store';
-import { etagSlice, removeEtag, setEtag } from './etagSlice';
-import { authSlice } from './authSlice';
+import { removeEtag, selectEtag, setEtag } from './etagSlice';
+import { selectIdToken } from './authSlice';
 
 export interface SpaceEntry {
   id: string;
@@ -19,8 +19,8 @@ export const spaceApi = createApi({
     baseUrl: 'https://lki9rp3gpe.execute-api.us-east-1.amazonaws.com/prod/spaces',
     prepareHeaders: (headers, { getState, endpoint }) => {
       const state = getState() as RootState;
-      const etag = etagSlice.selectors.selectEtag(state, endpoint);
-      const token = authSlice.selectors.selectIdToken(state);
+      const etag = selectEtag(state, endpoint);
+      const token = selectIdToken(state);
 
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
@@ -49,14 +49,18 @@ export const spaceApi = createApi({
           //
         } else {
           removeEtag({ url: etagUrl(meta) });
+          //
           // response.forEach((item) => removeEtag({ url: etagUrl(meta, item.id) }));
+          //
         }
         return response;
       },
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       providesTags: (_result) => [{ type: 'SpaceEntry', id: 'LIST' }],
+        //
         // Should not touch the individual etags, those individual hashes will not match the 'all' hash
         // result.map(({ id }) => ({ type: 'SpaceEntry', id }))
+        //
     }),
 
     getSpacesById: builder.query<SpaceEntry, string>({
