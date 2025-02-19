@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit'
 import { spaceApi } from './spaceServiceApi'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import { authSlice } from "./authSlice";
+import { etagSlice } from './etagSlice';
 
 export const store = configureStore({
   // Add the generated reducer as a specific top-level slice
   reducer: {
     [spaceApi.reducerPath]: spaceApi.reducer,
     [authSlice.reducerPath]: authSlice.reducer,
+    [etagSlice.reducerPath]: etagSlice.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.

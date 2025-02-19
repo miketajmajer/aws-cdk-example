@@ -30,6 +30,9 @@ const authSlice = createSlice({
       state.refreshToken = null;
     },
   },
+  selectors: {
+    selectIdToken: (state) => state.idToken,
+  }
 });
 
 export const { authTokenChange, logoutUser } = authSlice.actions;
