@@ -3,13 +3,7 @@ import { BaseQueryMeta, createApi, fetchBaseQuery } from '@reduxjs/toolkit/query
 import { selectIdToken } from '../slices/authSlice';
 import { removeEtag, selectEtag, setEtag } from '../slices/etagSlice';
 import type { RootState } from '../store/store';
-
-export interface SpaceEntry {
-  id: string;
-  location: string;
-  name: string;
-  protoUrl?: string;
-}
+import { SpaceEntry } from '../../components/model/model';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const etagUrl = (meta: BaseQueryMeta<any>, id: string = '') => id ? `${meta!.request.url}?id=${id}` : meta!.request.url;

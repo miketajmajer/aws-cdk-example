@@ -1,10 +1,10 @@
 import { type CognitoUser } from '@aws-amplify/auth';
 import { Amplify, Auth } from 'aws-amplify';
-import { AuthStack } from '../../../serverless/outputs.json';
+import { AuthStack } from '../../../space-finder/outputs.json';
 import { CognitoIdentityClient } from '@aws-sdk/client-cognito-identity';
 import { fromCognitoIdentityPool } from '@aws-sdk/credential-providers';
 
-const awsRegion = 'eu-east-1';
+const awsRegion = 'eu-west-1';
 
 Amplify.configure({
     Auth: {
@@ -12,7 +12,7 @@ Amplify.configure({
         region: awsRegion,
         userPoolId: AuthStack.SpaceUserPoolId,
         userPoolWebClientId: AuthStack.SpaceUserPoolClientId,
-        identityPoolId: AuthStack.SpacesIdentityPoolId,
+        identityPoolId: AuthStack.SpaceIdentityPoolId,
         authenticationFlowType: 'USER_PASSWORD_AUTH'
     }
 })
@@ -61,7 +61,7 @@ export class AuthService {
                 clientConfig: {
                     region: awsRegion
                 },
-                identityPoolId: AuthStack.SpacesIdentityPoolId,
+                identityPoolId: AuthStack.SpaceIdentityPoolId,
                 logins: {
                     [cognitoIdentityPool]: this.jwtToken!
                 }

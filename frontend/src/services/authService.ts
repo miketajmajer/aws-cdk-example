@@ -3,7 +3,7 @@ import { Amplify, Auth } from 'aws-amplify';
 import { CognitoIdentityClient } from '@aws-sdk/client-cognito-identity';
 import { fromCognitoIdentityPool } from '@aws-sdk/credential-providers';
 
-import { AuthStack } from '../../../../serverless/outputs.json';
+import { AuthStack } from '../../../serverless/outputs.json';
 
 const awsRegion = 'eu-east-1';
 

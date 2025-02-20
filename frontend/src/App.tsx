@@ -1,41 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { useDispatch } from 'react-redux'
-import { authTokenChange } from './state/slices/authSlice'
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import NavBar from "./components/NavBar";
+import { useState } from "react";
+
+import LoginComponent from "./components/LoginComponent";
+import { AuthService } from "./services/authService";
+import { DataService } from "./services/dataService";
+import CreateSpace from "./components/spaces/CreateSpace";
+import Spaces from "./components/spaces/Spaces";
+
+import "./App.css";
+
+const authService = new AuthService();
+const dataService = new DataService(authService);
 
 function App() {
-  const [count, setCount] = useState(0)
-  const dispatch = useDispatch();
+  const [userName, setUserName] = useState<string | undefined>(undefined);
+
+  const router = createBrowserRouter([
+    {
+      element: (
+        <>
+          <NavBar userName={userName} />
+          <Outlet />
+        </>
+      ),
+      children: [
+        {
+          path: "/",
+          element: <div>Hello world!</div>,
+        },
+        {
+          path: "/login",
+          element: (
+            <LoginComponent
+              authService={authService}
+              setUserNameCb={setUserName}
+            />
+          ),
+        },
+        {
+          path: "/profile",
+          element: <div>Profile page</div>,
+        },
+        {
+          path: "/createSpace",
+          element: <CreateSpace dataService={dataService} />,
+        },
+        {
+          path: "/spaces",
+          element: <Spaces dataService={dataService} />,
+        },
+      ],
+    },
+  ]);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank" rel="noopener noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noopener noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => {
-          setCount((count) => count + 1);
-          dispatch(authTokenChange({ idToken: "new token", refreshToken: "" }));
-        }}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="wrapper">
+      <RouterProvider router={router} />
+    </div>
+  );
 }
 
-export default App
+export default App;
