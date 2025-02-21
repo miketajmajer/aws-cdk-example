@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export interface AuthAction {
+export interface ETagAction {
   url: string;
   etag: string
 }
@@ -17,7 +17,7 @@ const etagSlice = createSlice({
   name: 'etag',
   initialState,
   reducers: {
-    setEtag: (state, action: PayloadAction<AuthAction>) => {
+    setEtag: (state, action: PayloadAction<ETagAction>) => {
       state.etags[action.payload.url] = action.payload.etag;
     },
     removeEtag: (state, action: PayloadAction<{ url: string }>) => {

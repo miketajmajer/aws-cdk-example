@@ -8,7 +8,7 @@ import { SpaceEntry } from '../../components/model/model';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const etagUrl = (meta: BaseQueryMeta<any>, id: string = '') => id ? `${meta!.request.url}?id=${id}` : meta!.request.url;
 
-export const spaceApi = createApi({
+const spaceApi = createApi({
   reducerPath: 'spacesApi',
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://lki9rp3gpe.execute-api.us-east-1.amazonaws.com/prod/spaces',
@@ -130,3 +130,4 @@ export const {
   useUpdateSpacesMutation,
   useDeleteSpacesMutation
 } = spaceApi;
+export { spaceApi };
