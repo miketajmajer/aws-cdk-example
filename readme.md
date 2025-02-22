@@ -139,3 +139,43 @@ visiable in the CDK and only accessable due to the explicet granting access to t
 ```
 aws cognito-idp admin-set-user-password --user-pool-id "pool id" --username "user name" --password "password here" --permanent
 ```
+
+# How to capture outputs from deploy
+```
+cdk deploy --all --outputs-file outputs.json
+```
+
+# IAM policy Conditions
+
+This is needed to map a token to a set of IAM policies for access to resources (via delegation or normal).
+
+[Fine-grained access control](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/specifying-conditions.html)
+
+```json
+"Condition":{
+    "ForAllValues:StringEquals":{
+        "dynamodb:LeadingKeys":[
+            "${www.amazon.com:user_id}"
+        ],
+        "dynamodb:Attributes":[
+            "UserId",
+            "GameTitle",
+            "Wins",
+            "Losses",
+            "TopScore",
+            "TopScoreDateTime"
+        ]
+    },
+    "StringEqualsIfExists":{
+        "dynamodb:Select":"SPECIFIC_ATTRIBUTES"
+    }
+}
+```
+
+Also see:
+1. ForAllValues:StringNotLike
+1. ForAllValues:StringNotEquals
+1. StringNotEqualsIgnoreCase
+1. ForAllValues
+
+[Stack Overflow](https://stackoverflow.com/questions/46062084/how-to-provide-multiple-stringnotequals-conditions-in-aws-policy)

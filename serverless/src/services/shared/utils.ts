@@ -1,4 +1,4 @@
-import { APIGatewayProxyEvent } from "aws-lambda";
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
 export class JSONParseError extends Error {
   constructor(message: string) {
@@ -25,4 +25,15 @@ export function hasGroup(event: APIGatewayProxyEvent, group: SpacesGroups): bool
     return false;
   }
   return groups.includes(SpacesGroups[group]);
+}
+
+export function addCorsHeader(arg: APIGatewayProxyResult) {
+  if (!arg.headers) {
+    arg.headers = {};
+  }
+  arg.headers = {
+    'Access-Control-Allow-Origin': '*', // Any website can use our service!
+    'Access-Control-Allow-Methods': '*', // Any HTTP method is allowed!
+    'Access-Control-Allow-Credentials': true, // pass creds though as well
+  };
 }
