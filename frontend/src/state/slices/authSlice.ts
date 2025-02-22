@@ -9,23 +9,32 @@ interface AuthAction {
 
 // needed for api to access state!
 interface AuthState {
-  idToken: string | null;
-  refreshToken: string | null;
+  tokens: {
+    idToken: string | null;
+    refreshToken: string | null;
+  }
   temporary: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    temporaryCredentials: any;
-    temporaryCredentialsLoadingState: 'loading' | 'idle' | 'failed';
-    temporaryCredentialsError: string;
+    data: any;
+    loading: 'pending' | 'fulfilled' | 'rejected' | 'undefined';
+    error: string;
   }
 }
 
 const initialState = {
-  idToken: localStorage.getItem("idToken"),
-  refreshToken: localStorage.getItem("refreshToken"),
+  //
+  // This isn't best practice - for prod code use Cookies with HTTPOnly and SameSite
+  // with refresh tokens having a seperate path (/refresh) so they are not sent with every
+  // request.
+  //
+  tokens: {
+    idToken: localStorage.getItem("idToken"),
+    refreshToken: localStorage.getItem("refreshToken"),
+  },
   temporary: {
-    temporaryCredentials: null,
-    temporaryCredentialsLoadingState: 'idle',
-    temporaryCredentialsError: '',
+    data: null,
+    loading: 'undefined', // if undefined, we need to make a request
+    error: '',
   },
 } as AuthState;
 
@@ -34,43 +43,46 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setAuthenticationUser(state, action: PayloadAction<AuthAction>) {
-      state.idToken = action.payload.idToken;
-      state.refreshToken = action.payload.refreshToken;
-      state.temporary.temporaryCredentials = null;
+      state.tokens.idToken = action.payload.idToken;
+      state.tokens.refreshToken = action.payload.refreshToken;
+      state.temporary.data = null;
+      state.temporary.loading = 'undefined';
     },
     authTokenChange: (state, action: PayloadAction<AuthAction>) => {
       localStorage.setItem("idToken", action.payload.idToken);
       localStorage.setItem("refreshToken", action.payload.refreshToken);
-      state.idToken = action.payload.idToken;
-      state.refreshToken = action.payload.refreshToken;
-      state.temporary.temporaryCredentials = null;
+      state.tokens.idToken = action.payload.idToken;
+      state.tokens.refreshToken = action.payload.refreshToken;
+      state.temporary.data = null;
+      state.temporary.loading = 'undefined';
     },
     logoutUser: (state) => {
       localStorage.removeItem("idToken");
       localStorage.removeItem("refreshToken");
-      state.idToken = null;
-      state.refreshToken = null;
-      state.temporary.temporaryCredentials = null;
+      state.tokens.idToken = null;
+      state.tokens.refreshToken = null;
+      state.temporary.data = null;
+      state.temporary.loading = 'undefined';
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(generateTemporaryCredentialsThunk.pending, (state) => {
-        state.temporary.temporaryCredentialsLoadingState = 'loading';
-        state.temporary.temporaryCredentials = null;
+        state.temporary.loading = 'pending';
+        state.temporary.data = null;
       })
       .addCase(generateTemporaryCredentialsThunk.fulfilled, (state, action) => {
-        state.temporary.temporaryCredentials = action.payload;
-        state.temporary.temporaryCredentialsLoadingState = 'idle';
+        state.temporary.data = action.payload;
+        state.temporary.loading = 'fulfilled';
       })
       .addCase(generateTemporaryCredentialsThunk.rejected, (state, action) => {
-        state.temporary.temporaryCredentialsLoadingState = 'failed';
-        state.temporary.temporaryCredentialsError = action.payload as string;
+        state.temporary.loading = 'rejected';
+        state.temporary.error = action.error.message as string;
       });
   },
   selectors: {
-    selectIdToken: (state): string | null => state.idToken,
-    selectTemporaryCredentials: (state): string | null => state.temporary.temporaryCredentials,
+    selectIdToken: (state): string | null => state.tokens.idToken,
+    selectTemporaryCredentials: (state): string | null => state.temporary.data,
   }
 });
 

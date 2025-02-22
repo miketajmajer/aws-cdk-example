@@ -1,7 +1,10 @@
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
+import { AppDispatch, RootState } from "./state/store/store";
+import { generateTemporaryCredentialsThunk } from "./state/api/authService";
 import LoginComponent from "./components/LoginComponent";
 import { AuthService } from "./services/authService";
 import { DataService } from "./services/dataService";
@@ -15,6 +18,13 @@ const dataService = new DataService(authService);
 
 function App() {
   const [userName, setUserName] = useState<string | undefined>(undefined);
+  const { data, loading, error } = useSelector((state: RootState) => state.auth).temporary;
+  const dispatch = useDispatch<AppDispatch>();
+  // use effect or on click!
+
+  if (loading === 'undefined') {
+    dispatch(generateTemporaryCredentialsThunk());
+  }
 
   const router = createBrowserRouter([
     {
