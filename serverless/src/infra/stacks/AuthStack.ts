@@ -12,7 +12,13 @@ import {
   PolicyStatement,
   Role,
 } from "aws-cdk-lib/aws-iam";
+import { IBucket } from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
+
+
+interface AuthStackProps extends StackProps {
+  photosBucket: IBucket;
+}
 
 export class AuthStack extends Stack {
   public userPool!: UserPool;
@@ -22,13 +28,13 @@ export class AuthStack extends Stack {
   private guestRole!: Role;
   private adminRole!: Role;
 
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props: AuthStackProps) {
     super(scope, id, props);
 
     this.createUserPool();
     this.createUserPoolClient();
     this.createIdentityPool();
-    this.createRoles();
+    this.createRoles(props.photosBucket);
     this.attachRoles();
     this.createAdminsGroup();
     this.createUsersGroup();
@@ -91,7 +97,7 @@ export class AuthStack extends Stack {
     });
   }
 
-  private createRoles() {
+  private createRoles(photosBucket: IBucket) {
     this.adminRole = new Role(this, "CognitoAdminRole", {
       assumedBy: new FederatedPrincipal(
         "cognito-identity.amazonaws.com",
@@ -162,6 +168,15 @@ export class AuthStack extends Stack {
     new CfnOutput(this, "CognitoDefaultUnauthenticatedRoleArn", {
       value: this.guestRole.roleArn,
     });
+
+    this.adminRole.addToPolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+          's3:PutObject',
+          's3:PutObjectAcl'
+      ],
+      resources: [photosBucket.bucketArn + '/*']
+  }))
   }
 
   private attachRoles() {

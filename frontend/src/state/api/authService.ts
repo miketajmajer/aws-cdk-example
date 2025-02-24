@@ -32,6 +32,19 @@ async function cognitoLogin(args: {userName: string, password: string}) {
   }
 }
 
+// // use this with the slice (should be a better experience!)
+// const cognitoLoginThunk = createAsyncThunk(
+//   'auth/cognitoLogin',
+//   async (args: {userName: string, password: string}, thunkApi) => {
+//     try {
+//       return cognitoLogin(args);
+//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//     } catch (error: any) {
+//       return thunkApi.rejectWithValue(error.message);
+//     }
+//   }
+// );
+
 const generateTemporaryCredentialsThunk = createAsyncThunk(
   'auth/generateTemporaryCredentials',
   async (_, thunkApi) => {
