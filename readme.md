@@ -179,3 +179,12 @@ Also see:
 1. ForAllValues
 
 [Stack Overflow](https://stackoverflow.com/questions/46062084/how-to-provide-multiple-stringnotequals-conditions-in-aws-policy)
+
+# If AWS caches the web deployment
+
+run:
+```bash
+aws cloudfront create-invalidation --distribution-id The-S3-Distribution-ID --paths "/*"
+```
+
+The ID is findable in the UiDeploymentStack SpacesFinderDistributionNNNN -> Physical ID
